@@ -1,0 +1,26 @@
+---
+import LayoutApp from '@layouts/LayoutApp.astro';
+import ProjectCard from '@components/app/ProjectCard.astro';
+import AddNewProjectCard from '@components/app/projects/AddNewProjectCard.astro';
+import { getProjects } from '@data/pocketbase';
+
+const projects = await getProjects();
+
+console.log(projects);
+---
+
+<LayoutApp title="Dashboard">
+  <div class="py-10 mx-auto text-white max-w-7xl space-y-6">
+    <div
+      class="rounded-lg bg-zinc-900 px-5 py-4 sm:py-2.5 text-xl sm:text-3xl md:text-5xl text-white uppercase text-center font-extrabold"
+    >
+      Projects
+    </div>
+    <div class="space-y-6">
+      <ul class="grid gap-6 sm:grid-cols-2">
+        {projects.map((project) => <ProjectCard project={project} />)}
+      </ul>
+      <AddNewProjectCard />
+    </div>
+  </div>
+</LayoutApp>
