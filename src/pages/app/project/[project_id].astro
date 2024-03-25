@@ -1,0 +1,50 @@
+---
+import LayoutApp from '@layouts/LayoutApp.astro';
+import { getProject, getTasks } from '@data/pocketbase';
+import ButtonAddNewTask from '@components/app/tasks/ButtonAddNewTask.astro';
+
+const { project_id = '' } = Astro.params;
+
+const project = await getProject(project_id);
+
+if (!project) {
+  return Astro.redirect('/app/dashboard');
+}
+
+const tasks = await getTasks(project_id);
+---
+
+<LayoutApp title={project.name}>
+  <div class="py-10 mx-auto text-white max-w-7xl space-y-6">
+    <div
+      class="rounded-lg bg-zinc-900 px-5 py-4 sm:py-2.5 text-xl sm:text-3xl md:text-5xl text-white uppercase text-center font-extrabold"
+    >
+      {project.name}
+    </div>
+    <div class="space-y-6">
+      <div
+        class="p-10 text-white rounded-lg shadow bg-zinc-100 dark:bg-zinc-800"
+      >
+        <h2
+          class="pb-10 text-xl font-black text-center uppercase text-zinc-800 dark:text-white"
+        >
+          Tasks to do
+        </h2>
+        <div>
+          {
+            tasks.length === 0 && (
+              <p class="text-center text-zinc-900 dark:text-white pb-10">
+                Nothing yet
+              </p>
+            )
+          }
+
+          <ul class="space-y-6">
+            {tasks.map((task) => <li>{task.text}</li>)}
+          </ul>
+        </div>
+        <ButtonAddNewTask project_id={project_id} />
+      </div>
+    </div>
+  </div>
+</LayoutApp>

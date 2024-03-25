@@ -1,0 +1,47 @@
+---
+const { title = 'Secretplan' } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content="A project management tool" />
+
+    <script>
+      import * as htmx from 'htmx.org';
+      import Alpine from 'alpinejs';
+      declare global {
+        interface Window {
+          htmx: any;
+          Alpine: any;
+        }
+      }
+
+      window.htmx = htmx; //optional
+      window.Alpine = Alpine; //optional
+
+      Alpine.start();
+
+      htmx.process(document.body);
+    </script>
+
+    <style>
+      dialog::backdrop {
+        background-color: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(3px);
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="min-h-screen dark:bg-black dark:text-white">
+      <div class="max-w-5xl px-4 py-4 mx-auto">
+        <dialog></dialog>
+        <slot />
+      </div>
+    </main>
+  </body>
+</html>

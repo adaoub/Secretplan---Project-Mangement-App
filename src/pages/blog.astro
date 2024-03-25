@@ -7,6 +7,8 @@ let posts = await getCollection('blog');
 posts = posts.sort(
   (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
 );
+
+export const prerender = true;
 ---
 
 <LayoutSite title={'Blog'}>
